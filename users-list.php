@@ -32,7 +32,7 @@ $id = $_SESSION['user_id'];
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/jquery/jquery-3.6.4.min.js"></script>
 
     <!-- DataTables JavaScript -->
     <script src="https://cdn.datatables.net/v/bs4/dt-1.11.2/datatables.min.js"></script>
