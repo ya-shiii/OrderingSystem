@@ -35,7 +35,7 @@ $id = $_SESSION['user_id'];
     <script src="assets/jquery/jquery-3.6.4.min.js"></script>
 
     <!-- DataTables JavaScript -->
-    <script src="https://cdn.datatables.net/v/bs4/dt-1.11.2/datatables.min.js"></script>
+    <script src="assets/datatables/datatables.min.js"></script>
 
     <style>
         .drop-shadow-lg {
@@ -219,14 +219,28 @@ $id = $_SESSION['user_id'];
     <div id="delete-user-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('delete-user-modal')"></div>
         <div class="bg-white rounded-lg p-8 relative">
-            <h2 class="text-2xl font-bold mb-4">Delete User</h2>
-            <!-- Edit user form inputs go here -->
-            <div class="flex justify-end">
-                <button id="submit-delete-user" type="submit"
-                    class="btn rounded-full bg-[#4e4485] py-1 px-3 mr-3 text-white">Submit</button>
-                <button id="cancel-delete-user" type="button"
-                    class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
-            </div>
+            <h2 class="text-2xl font-bold mb-4">Are you sure you want to delete user?</h2>
+            <form id="delete-user-form" action="api/delete_user.php" method="POST">
+                <input type="hidden" name="user_id" id="delete-user-id">
+                <div class="mb-4">
+                    <label for="delete-username" class="block text-lg font-semibold mb-1">Username:</label>
+                    <input type="text" id="delete-username" name="username"
+                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
+                        readonly>
+                </div>
+                <div class="mb-4">
+                    <label for="delete-usertype" class="block text-lg font-semibold mb-1">User Type:</label>
+                    <input type="text" id="delete-usertype" name="usertype"
+                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
+                        readonly>
+                </div>
+                <div class="flex justify-end">
+                    <button id="submit-delete-user" type="submit"
+                        class="btn rounded-full bg-[#4e4485] py-1 px-3 mr-3 text-white">Submit</button>
+                    <button id="cancel-delete-user" type="button"
+                        class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -293,6 +307,7 @@ $id = $_SESSION['user_id'];
 
 
         });
+
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.add('hidden');
@@ -304,12 +319,37 @@ $id = $_SESSION['user_id'];
             // Perform any additional logic or data retrieval based on the userId if needed
             // For example, you can fetch user data via AJAX using the userId and populate the modal form fields
         }
+
+
+        // for deleting user
         function openDeleteModal(userId) {
             // Show the delete user modal
             document.getElementById("delete-user-modal").classList.remove("hidden");
 
-            // Perform any additional logic or data retrieval based on the userId if needed
-            // For example, you can fetch user data via AJAX using the userId and populate the modal form fields
+            // Perform AJAX request to retrieve user details
+            $.ajax({
+                url: 'api/get_user.php',
+                type: 'POST',
+                data: { userId: userId },
+                success: function (response) {
+                    // Parse the JSON response
+                    var user = JSON.parse(response);
+
+                    // Update the delete-user-modal form with the retrieved values
+                    $('#delete-user-id').val(user.user_id);
+                    $('#delete-username').val(user.username);
+                    $('#delete-usertype').val(user.usertype);
+
+                    // Open the delete-user-modal
+                    $('#delete-user-modal').removeClass('hidden');
+                },
+                error: function () {
+                    // Handle error case
+                    console.log('Error occurred while retrieving user details.');
+                }
+            });
+
+
         }
     </script>
 

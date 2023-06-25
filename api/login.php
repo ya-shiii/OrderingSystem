@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   } else {
     // User not found, display an error message
     echo "Invalid username or password.";
+    echo "<script>alert('Invalid username or password.'); window.location.href='../login.php';</script>";
   }
 
   // Close the prepared statement and database connection
