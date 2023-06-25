@@ -205,15 +205,40 @@ $id = $_SESSION['user_id'];
         <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('edit-user-modal')"></div>
         <div class="bg-white rounded-lg p-8 relative">
             <h2 class="text-2xl font-bold mb-4">Edit User</h2>
-            <!-- Edit user form inputs go here -->
-            <div class="flex justify-end">
-                <button id="submit-edit-user" type="submit"
-                    class="btn rounded-full bg-[#4e4485] py-1 px-3 mr-3 text-white">Submit</button>
-                <button id="cancel-edit-user" type="button"
-                    class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
-            </div>
+            <form id="edit-user-form" action="api/update_user.php" method="POST">
+                <input type="hidden" name="user_id" id="edit-user-id">
+                <div class="mb-4">
+                    <label for="edit-username" class="block text-lg font-semibold mb-1">Username:</label>
+                    <input type="text" id="edit-username" name="username"
+                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label for="edit-password" class="block text-lg font-semibold mb-1">Password:</label>
+                    <input type="text" id="edit-password" name="password"
+                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label for="edit-usertype" class="block text-lg font-semibold mb-1">User Type:</label>
+                    <select id="edit-usertype" name="usertype"
+                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
+                        required>
+                        <option value="Admin">Admin</option>
+                        <option value="Front Desk">Front Desk Staff</option>
+                        <option value="Kitchen Staff">Kitchen Staff</option>
+                    </select>
+                </div>
+                <div class="flex justify-end">
+                    <button id="submit-edit-user" type="submit"
+                        class="btn rounded-full bg-[#4e4485] py-1 px-3 mr-3 text-white">Submit</button>
+                    <button id="cancel-edit-user" type="button"
+                        class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
+
 
     <!-- Delete User Modal -->
     <div id="delete-user-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
@@ -277,12 +302,6 @@ $id = $_SESSION['user_id'];
                 $('#delete-user-modal').addClass('hidden');
             });
 
-            // // Handle Add User Form Submission
-            // $('#submit-add-user').click(function () {
-            //     // Perform form validation and submission
-            //     // Add your logic here
-            // });
-
             // Initialize DataTable
             $('#users-table').DataTable({
                 ajax: {
@@ -312,12 +331,34 @@ $id = $_SESSION['user_id'];
             const modal = document.getElementById(modalId);
             modal.classList.add('hidden');
         }
+
         function openEditModal(userId) {
             // Show the edit user modal
             document.getElementById("edit-user-modal").classList.remove("hidden");
 
-            // Perform any additional logic or data retrieval based on the userId if needed
-            // For example, you can fetch user data via AJAX using the userId and populate the modal form fields
+            // Make an AJAX request to fetch user details
+            $.ajax({
+                url: "api/edit_user.php",
+                type: "GET",
+                data: { user_id: userId },
+                success: function (response) {
+                    // Parse the JSON response
+                    var user = JSON.parse(response);
+
+                    // Populate the form fields with user details
+                    $("#edit-user-id").val(user.user_id);
+                    $("#edit-password").val(user.password);
+                    $("#edit-username").val(user.username);
+                    $("#edit-usertype").val(user.usertype);
+
+                    // Show the Edit User modal
+                    showModal("edit-user-modal");
+                },
+                error: function (xhr, status, error) {
+                    // Handle the error if the request fails
+                    console.log(error);
+                }
+            });
         }
 
 
@@ -348,9 +389,9 @@ $id = $_SESSION['user_id'];
                     console.log('Error occurred while retrieving user details.');
                 }
             });
-
-
         }
+
+
     </script>
 
 

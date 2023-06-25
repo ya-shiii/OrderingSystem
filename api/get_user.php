@@ -25,5 +25,8 @@ if (isset($_POST['userId'])) {
 } else {
     // Handle case when user ID is not provided
     echo "User ID not provided.";
+    echo "<script>alert('User ID not provided.'); window.location.href='../users-list.php';</script>";
 }
 ?>
+
+
