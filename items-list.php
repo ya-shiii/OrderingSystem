@@ -107,7 +107,7 @@ $id = $_SESSION['user_id'];
 
             <div class="border border-r-white-500 mx-2"></div>
 
-            <p class="text-white font-bold uppercase text-xl mx-2">
+            <p class="text-white font-bold uppercase text-xl mx-2 current-page">
                 <a href="items-list.php">
                     Items
                 </a>
@@ -123,7 +123,7 @@ $id = $_SESSION['user_id'];
 
             <div class="border border-r-white-500 mx-2"></div>
 
-            <p class="text-white font-bold uppercase text-xl mx-2 current-page">
+            <p class="text-white font-bold uppercase text-xl mx-2 ">
                 <a href="users-list.php">
                     users
                 </a>
@@ -141,16 +141,17 @@ $id = $_SESSION['user_id'];
     <div class="bg-gray-200 min-h-screen flex flex-col items-start justify-center py-8">
         <div id="addbtn" class="ml-14 mb-3">
             <a href="#">
-                <p class="btn text-white bg-[#4e4485] px-6 py-3 rounded-full font-bold uppercase">Add user</p>
+                <p class="btn text-white bg-[#4e4485] px-6 py-3 rounded-full font-bold uppercase">Add item</p>
             </a>
         </div>
         <div id="main-content" class="rounded-2xl w-11/12 bg-[#a99cf0] drop-shadow-xl p-8 mx-auto">
-            <table id="users-table" class="table bg-[#a99cf0]" style="width:100%">
+            <table id="items-table" class="table bg-[#a99cf0]" style="width:100%">
                 <thead>
                     <tr>
-                        <th>User ID</th>
-                        <th>Username</th>
-                        <th>User Type</th>
+                        <th>Item ID</th>
+                        <th>Item Name</th>
+                        <th>Item Price</th>
+                        <th>Item Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -159,9 +160,10 @@ $id = $_SESSION['user_id'];
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>User ID</th>
-                        <th>Username</th>
-                        <th>User Type</th>
+                        <th>Item ID</th>
+                        <th>Item Name</th>
+                        <th>Item Price</th>
+                        <th>Item Type</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -170,77 +172,79 @@ $id = $_SESSION['user_id'];
     </div>
 
 
-    <!-- Add User Modal -->
-    <div id="add-user-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('add-user-modal')"></div>
-        <div class="bg-[#4d68a1] rounded-lg p-8 relative drop-shadow-xl">
-            <h2 class="text-2xl text-white font-bold mb-4">Add User</h2>
-            <form id="add-user-form" action="api/adduser.php" method="POST">
+    <!-- Add item Modal -->
+    <div id="add-item-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('add-item-modal')"></div>
+        <div class="bg-[#4e4485] rounded-lg p-8 relative drop-shadow-xl">
+            <h2 class="text-2xl text-white font-bold mb-4">Add Item</h2>
+            <form id="add-item-form" action="api/additem.php" method="POST">
                 <div class="mb-4">
-                    <label for="username" class="text-white block text-lg font-semibold mb-1">Username:</label>
-                    <input type="text" id="username" name="username"
+                    <label for="item_name" class="text-white block text-lg font-semibold mb-1">Item Name:</label>
+                    <input type="text" id="item_name" name="item_name"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         required>
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="text-white block text-lg font-semibold mb-1">Password:</label>
-                    <input type="password" id="password" name="password"
+                    <label for="item_price" class="text-white block text-lg font-semibold mb-1">Item Price:</label>
+                    <input type="item_price" id="item_price" name="item_price"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         required>
                 </div>
                 <div class="mb-4">
-                    <label for="usertype" class="text-white block text-lg font-semibold mb-1">User Type:</label>
-                    <select id="usertype" name="usertype"
+                    <label for="item_type" class="text-white block text-lg font-semibold mb-1">Item Type:</label>
+                    <select id="item_type" name="item_type"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         required>
-                        <option value="Admin">Admin</option>
-                        <option value="Front Desk">Front Desk Staff</option>
-                        <option value="Kitchen Staff">Kitchen Staff</option>
+                        <option value="Beverage">Beverage</option>
+                        <option value="Meal">Meal</option>
+                        <option value="Snack">Snack</option>
+                        <option value="Add-on">Add-on</option>
                     </select>
                 </div>
                 <div class="flex justify-end">
-                    <button type="submit" id="submit-add-user"
-                        class="btn rounded-full bg-[#4e4485] py-1 drop-shadow-lg px-3 mr-3 text-white">Submit</button>
-                    <button id="cancel-add-user" type="button"
+                    <button type="submit" id="submit-add-item"
+                        class="btn rounded-full bg-[#4d68a1] py-1 drop-shadow-lg px-3 mr-3 text-white">Submit</button>
+                    <button id="cancel-add-item" type="button"
                         class="btn rounded-full bg-gray-400 py-1 px-3 drop-shadow-lg font-bold mr-2">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Edit User Modal -->
-    <div id="edit-user-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('edit-user-modal')"></div>
+    <!-- Edit item Modal -->
+    <div id="edit-item-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('edit-item-modal')"></div>
         <div class="bg-white rounded-lg p-8 relative">
-            <h2 class="text-2xl font-bold mb-4">Edit User</h2>
-            <form id="edit-user-form" action="api/update_user.php" method="POST">
-                <input type="hidden" name="user_id" id="edit-user-id">
+            <h2 class="text-2xl font-bold mb-4">Edit item</h2>
+            <form id="edit-item-form" action="api/update_item.php" method="POST">
+                <input type="hidden" name="item_id" id="edit-item-id">
                 <div class="mb-4">
-                    <label for="edit-username" class="block text-lg font-semibold mb-1">Username:</label>
-                    <input type="text" id="edit-username" name="username"
+                    <label for="edit-item_name" class="block text-lg font-semibold mb-1">Item Name:</label>
+                    <input type="text" id="edit-item_name" name="item_name"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         required>
                 </div>
                 <div class="mb-4">
-                    <label for="edit-password" class="block text-lg font-semibold mb-1">Password:</label>
-                    <input type="text" id="edit-password" name="password"
+                    <label for="edit-item_price" class="block text-lg font-semibold mb-1">Item Price:</label>
+                    <input type="text" id="edit-item_price" name="item_price"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         required>
                 </div>
                 <div class="mb-4">
-                    <label for="edit-usertype" class="block text-lg font-semibold mb-1">User Type:</label>
-                    <select id="edit-usertype" name="usertype"
+                    <label for="edit-item_type" class="block text-lg font-semibold mb-1">Item Type:</label>
+                    <select id="edit-item_type" name="item_type"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         required>
-                        <option value="Admin">Admin</option>
-                        <option value="Front Desk">Front Desk Staff</option>
-                        <option value="Kitchen Staff">Kitchen Staff</option>
+                        <option value="Beverage">Beverage</option>
+                        <option value="Meal">Meal</option>
+                        <option value="Snack">Snack</option>
+                        <option value="Add-on">Add-on</option>
                     </select>
                 </div>
                 <div class="flex justify-end">
-                    <button id="submit-edit-user" type="submit"
-                        class="btn rounded-full bg-[#4e4485] py-1 px-3 mr-3 text-white">Submit</button>
-                    <button id="cancel-edit-user" type="button"
+                    <button id="submit-edit-item" type="submit"
+                        class="btn rounded-full bg-[#4e4485] cancel-add-itemitempy-1 px-3 mr-3 text-white">Submit</button>
+                    <button id="cancel-edit-item" type="button"
                         class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
                 </div>
             </form>
@@ -248,29 +252,29 @@ $id = $_SESSION['user_id'];
     </div>
 
 
-    <!-- Delete User Modal -->
-    <div id="delete-user-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('delete-user-modal')"></div>
+    <!-- Delete item Modal -->
+    <div id="delete-item-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('delete-item-modal')"></div>
         <div class="bg-white rounded-lg p-8 relative">
-            <h2 class="text-2xl font-bold mb-4">Are you sure you want to delete user?</h2>
-            <form id="delete-user-form" action="api/delete_user.php" method="POST">
-                <input type="hidden" name="user_id" id="delete-user-id">
+            <h2 class="text-2xl font-bold mb-4">Are you sure you want to delete item?</h2>
+            <form id="delete-item-form" action="api/delete_item.php" method="POST">
+                <input type="hidden" name="item_id" id="delete-item-id">
                 <div class="mb-4">
-                    <label for="delete-username" class="block text-lg font-semibold mb-1">Username:</label>
-                    <input type="text" id="delete-username" name="username"
+                    <label for="delete-item_name" class="block text-lg font-semibold mb-1">item_name:</label>
+                    <input type="text" id="delete-item_name" name="item_name"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         readonly>
                 </div>
                 <div class="mb-4">
-                    <label for="delete-usertype" class="block text-lg font-semibold mb-1">User Type:</label>
-                    <input type="text" id="delete-usertype" name="usertype"
+                    <label for="delete-item_type" class="block text-lg font-semibold mb-1">Item Type:</label>
+                    <input type="text" id="delete-item_type" name="item_type"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         readonly>
                 </div>
                 <div class="flex justify-end">
-                    <button id="submit-delete-user" type="submit"
+                    <button id="submit-delete-item" type="submit"
                         class="btn rounded-full bg-[#4e4485] py-1 px-3 mr-3 text-white">Submit</button>
-                    <button id="cancel-delete-user" type="button"
+                    <button id="cancel-delete-item" type="button"
                         class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
                 </div>
             </form>
@@ -289,39 +293,44 @@ $id = $_SESSION['user_id'];
                 $('#navbar, #addbtn').addClass('floating-animation-down');
             }, 0);
 
-            // Open Add User Modal
+            // Open Add item Modal
             $('#addbtn a').click(function (e) {
                 e.preventDefault();
-                $('#add-user-modal').removeClass('hidden');
+                $('#add-item-modal').removeClass('hidden');
             });
 
-            // Close Add User Modal
-            $('#cancel-add-user').click(function () {
-                $('#add-user-modal').addClass('hidden');
+            // Close Add item Modal
+            $('#cancel-add-item').click(function () {
+                $('#add-item-modal').addClass('hidden');
             });
 
-            // Close Edit User Modal
-            $('#cancel-edit-user').click(function () {
-                $('#edit-user-modal').addClass('hidden');
+            // Close Edit item Modal
+            $('#cancel-edit-item').click(function () {
+                $('#edit-item-modal').addClass('hidden');
             });
 
-            // Close Edit User Modal
-            $('#cancel-delete-user').click(function () {
-                $('#delete-user-modal').addClass('hidden');
+            // Close Edit item Modal
+            $('#cancel-delete-item').click(function () {
+                $('#delete-item-modal').addClass('hidden');
             });
 
             // Initialize DataTable
-            $('#users-table').DataTable({
+            $('#items-table').DataTable({
                 ajax: {
-                    url: 'api/users.php',
+                    url: 'api/items.php',
                     dataSrc: 'data' // Use 'data' as the property to retrieve the JSON data
                 },
                 columns: [
-                    { data: '0', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'USER ID' column
-                    { data: '1', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'USERNAME' column
-                    { data: '2', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'USERTYPE' column
+                    { data: '0', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM ID' column
+                    { data: '1', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM NAME' column
                     {
-                        data: '3', // Use the index to access the 'OPTIONS' column
+                        data: '2', className: 'text-center bg-[#a99cf0]', render: function (data, type, row) {
+                            return '₱ ' + data; // Append "Php" before the data
+                        }
+                    }, // Use the index to access the 'ITEM PRICE' column
+                    { data: '3', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM TYPE' column
+                    {
+                        data: '4', // Use the index to access the 'OPTIONS' column
                         className: 'text-center bg-[#a99cf0]',
                         render: function (data, type, row) {
                             return data;
@@ -340,27 +349,27 @@ $id = $_SESSION['user_id'];
             modal.classList.add('hidden');
         }
 
-        function openEditModal(userId) {
-            // Show the edit user modal
-            document.getElementById("edit-user-modal").classList.remove("hidden");
+        function openEditModal(itemId) {
+            // Show the edit item modal
+            document.getElementById("edit-item-modal").classList.remove("hidden");
 
-            // Make an AJAX request to fetch user details
+            // Make an AJAX request to fetch item details
             $.ajax({
-                url: "api/edit_user.php",
+                url: "api/edit_item.php",
                 type: "GET",
-                data: { user_id: userId },
+                data: { item_id: itemId },
                 success: function (response) {
                     // Parse the JSON response
-                    var user = JSON.parse(response);
+                    var item = JSON.parse(response);
 
-                    // Populate the form fields with user details
-                    $("#edit-user-id").val(user.user_id);
-                    $("#edit-password").val(user.password);
-                    $("#edit-username").val(user.username);
-                    $("#edit-usertype").val(user.usertype);
+                    // Populate the form fields with item details
+                    $("#edit-item-id").val(item.item_id);
+                    $("#edit-item_price").val(item.item_price);
+                    $("#edit-item_name").val(item.item_name);
+                    $("#edit-item_type").val(item.item_type);
 
-                    // Show the Edit User modal
-                    showModal("edit-user-modal");
+                    // Show the Edit item modal
+                    showModal("edit-item-modal");
                 },
                 error: function (xhr, status, error) {
                     // Handle the error if the request fails
@@ -370,31 +379,31 @@ $id = $_SESSION['user_id'];
         }
 
 
-        // for deleting user
-        function openDeleteModal(userId) {
-            // Show the delete user modal
-            document.getElementById("delete-user-modal").classList.remove("hidden");
+        // for deleting item
+        function openDeleteModal(itemId) {
+            // Show the delete item modal
+            document.getElementById("delete-item-modal").classList.remove("hidden");
 
-            // Perform AJAX request to retrieve user details
+            // Perform AJAX request to retrieve item details
             $.ajax({
-                url: 'api/get_user.php',
+                url: 'api/get_item.php',
                 type: 'POST',
-                data: { userId: userId },
+                data: { itemId: itemId },
                 success: function (response) {
                     // Parse the JSON response
-                    var user = JSON.parse(response);
+                    var item = JSON.parse(response);
 
-                    // Update the delete-user-modal form with the retrieved values
-                    $('#delete-user-id').val(user.user_id);
-                    $('#delete-username').val(user.username);
-                    $('#delete-usertype').val(user.usertype);
+                    // Update the delete-item-modal form with the retrieved values
+                    $('#delete-item-id').val(item.item_id);
+                    $('#delete-item_name').val(item.item_name);
+                    $('#delete-item_type').val(item.item_type);
 
-                    // Open the delete-user-modal
-                    $('#delete-user-modal').removeClass('hidden');
+                    // Open the delete-item-modal
+                    $('#delete-item-modal').removeClass('hidden');
                 },
                 error: function () {
                     // Handle error case
-                    console.log('Error occurred while retrieving user details.');
+                    console.log('Error occurred while retrieving item details.');
                 }
             });
         }

@@ -92,15 +92,23 @@ $id = $_SESSION['user_id'];
         <div class="flex">
             <p class="text-white font-bold uppercase text-xl mx-2 current-page">
                 <a href="index.php">
-                    order list
+                    orders
                 </a>
             </p>
 
             <div class="border border-r-white-500 mx-2"></div>
 
             <p class="text-white font-bold uppercase text-xl mx-2">
+                <a href="items-list.php">
+                    Items
+                </a>
+            </p>
+            
+            <div class="border border-r-white-500 mx-2"></div>
+
+            <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="statistics.php">
-                    statistics
+                    Sales statistics
                 </a>
             </p>
 
@@ -108,7 +116,7 @@ $id = $_SESSION['user_id'];
 
             <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="users-list.php">
-                    users list
+                    users
                 </a>
             </p>
         </div>
