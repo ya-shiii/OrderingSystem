@@ -128,25 +128,39 @@ $id = $_SESSION['user_id'];
     </div>
 
     <!-- Main Content -->
-    div
-    <div class="flex justify-center items-center h-screen">
-        <div class="container">
-            <div class="flex justify-center items-center">
-                <div class="w-full">
-                    <div id="main-content" class="card rounded-lg bg-[#4e4485] drop-shadow-xl p-5 floating-animation">
-                        <div class="card-body">
-                            <div class="mx-auto flex items-center">
-                                <img class="mx-auto h-16" src="assets/img/SG_Logo.png" alt="Image Description">
-                            </div>
-
-                            <h2 class="card-title text-center font-bold text-2xl text-white font-black mb-3">SHII Grills
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="bg-gray-200 min-h-screen flex flex-col items-start justify-center py-8">
+        <div id="addbtn" class="ml-14 mb-3">
+            <a href="#">
+                <p class="btn text-white bg-[#4e4485] px-6 py-3 rounded-full font-bold uppercase">Add item</p>
+            </a>
+        </div>
+        <div id="main-content" class="rounded-2xl w-11/12 bg-[#a99cf0] drop-shadow-xl p-8 mx-auto">
+            <table id="items-table" class="table bg-[#a99cf0]" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Item Name</th>
+                        <th>Item Price</th>
+                        <th>Item Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be populated dynamically using JavaScript -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Item Name</th>
+                        <th>Item Price</th>
+                        <th>Item Type</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {

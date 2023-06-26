@@ -137,7 +137,6 @@ $id = $_SESSION['user_id'];
     </div>
 
     <!-- Main Content -->
-
     <div class="bg-gray-200 min-h-screen flex flex-col items-start justify-center py-8">
         <div id="addbtn" class="ml-14 mb-3">
             <a href="#">
@@ -260,7 +259,7 @@ $id = $_SESSION['user_id'];
             <form id="delete-item-form" action="api/delete_item.php" method="POST">
                 <input type="hidden" name="item_id" id="delete-item-id">
                 <div class="mb-4">
-                    <label for="delete-item_name" class="block text-lg font-semibold mb-1">item_name:</label>
+                    <label for="delete-item_name" class="block text-lg font-semibold mb-1">Item Name:</label>
                     <input type="text" id="delete-item_name" name="item_name"
                         class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
                         readonly>
