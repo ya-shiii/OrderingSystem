@@ -23,30 +23,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $itemName = $itemRow['item_name'];
     $itemPrice = $itemRow['item_price'];
 
+    // Calculate the total price
+    $totalPrice = $itemPrice * $quantity;
+
     // Check if the item already exists in temp_order table
-    $existingItemStmt = $conn->prepare("SELECT quantity FROM temp_order WHERE item_id = ?");
+    $existingItemStmt = $conn->prepare("SELECT quantity, price FROM temp_order WHERE item_id = ?");
     $existingItemStmt->bind_param("i", $itemId);
     $existingItemStmt->execute();
     $existingItemResult = $existingItemStmt->get_result();
 
     if ($existingItemResult->num_rows > 0) {
-        // Item already exists, update the quantity
+        // Item already exists, update the quantity and price
         $existingItemRow = $existingItemResult->fetch_assoc();
         $existingQuantity = $existingItemRow['quantity'];
-        $quantity += $existingQuantity;
+        $existingPrice = $existingItemRow['price'];
 
-        // Update the quantity in temp_order table
-        $updateStmt = $conn->prepare("UPDATE temp_order SET quantity = ? WHERE item_id = ?");
-        $updateStmt->bind_param("ii", $quantity, $itemId);
+        $quantity += $existingQuantity;
+        $totalPrice += $existingPrice;
+
+        // Update the quantity and price in temp_order table
+        $updateStmt = $conn->prepare("UPDATE temp_order SET quantity = ?, price = ? WHERE item_id = ?");
+        $updateStmt->bind_param("isi", $quantity, $totalPrice, $itemId);
 
         // Execute the update statement
         if ($updateStmt->execute()) {
-            // Quantity updated successfully
+            // Quantity and price updated successfully
             echo "<script>alert('Item quantity updated in the cart.');</script>";
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         } else {
-            // Failed to update the quantity
+            // Failed to update the quantity and price
             $errorMessage = "Failed to update the item quantity. Error: " . mysqli_error($conn);
             echo "<script>alert('$errorMessage');</script>";
             header("Location: " . $_SERVER['HTTP_REFERER']);
@@ -56,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Item does not exist, insert into temp_order table
         $sql = "INSERT INTO temp_order (item_id, item_name, quantity, price, date_ordered) VALUES (?, ?, ?, ?, NOW())";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isis", $itemId, $itemName, $quantity, $itemPrice);
+        $stmt->bind_param("isis", $itemId, $itemName, $quantity, $totalPrice);
 
         // Execute the insert statement
         if ($stmt->execute()) {

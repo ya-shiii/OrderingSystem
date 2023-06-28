@@ -7,9 +7,7 @@ $temp_order_result = mysqli_query($conn, $temp_order_query);
 
 // Check if there are items in the temp_order table
 if (mysqli_num_rows($temp_order_result) > 0) {
-    // Generate a queue number
-    $queue_number = generateQueueNumber(); // Replace this with your code to generate the queue number
-
+    
     // Create the order_data string and calculate the total price
     $order_data = '';
     $total_price = 0;
@@ -27,16 +25,16 @@ if (mysqli_num_rows($temp_order_result) > 0) {
         $total_price += $item_price;
 
         // Insert the item into the orders_statistics table
-        $order_statistics_query = "INSERT INTO orders_statistics (order_id, item_id, item_name, quantity, date_ordered)
-                                   VALUES (NULL, '$item_id', '$item_name', '$quantity', NOW())";
+        $order_statistics_query = "INSERT INTO orders_statistics (order_id, item_id, item_name, quantity, date_ordered, earnings)
+                                   VALUES (NULL, '$item_id', '$item_name', '$quantity', NOW(), '$item_price')";
         mysqli_query($conn, $order_statistics_query);
     }
 
     $order_data = rtrim($order_data, ', '); // Remove the trailing comma and space
 
     // Insert the order data into the orders_list table
-    $orders_list_query = "INSERT INTO orders_list (order_id, queue_number, order_date, order_data, total_price, status)
-                          VALUES (NULL, '$queue_number', NOW(), '$order_data', '$total_price', 'pending')";
+    $orders_list_query = "INSERT INTO orders_list (order_id, order_date, order_data, total_price, status)
+                          VALUES (NULL, NOW(), '$order_data', '$total_price', 'Preparing')";
     $insert_result = mysqli_query($conn, $orders_list_query);
 
     // Check if the insertion was successful
@@ -65,9 +63,4 @@ if (mysqli_num_rows($temp_order_result) > 0) {
 mysqli_close($conn);
 
 
-// Generate a unique queue number (implement your own logic)
-function generateQueueNumber() {
-    // Generate a random number between 1 and 1000
-    return rand(1, 999);
-}
 ?>

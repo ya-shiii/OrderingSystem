@@ -132,7 +132,15 @@ $id = $_SESSION['user_id'];
         <div class="flex">
             <p class="text-white font-bold uppercase text-xl mx-2 current-page">
                 <a href="index.php">
-                    Place orders
+                    Place order
+                </a>
+            </p>
+
+            <div class="border border-r-white-500 mx-2"></div>
+
+            <p class="text-white font-bold uppercase text-xl mx-2">
+                <a href="orders.php">
+                    orders list
                 </a>
             </p>
 
@@ -246,6 +254,9 @@ $id = $_SESSION['user_id'];
                         ?>
                         <button class="checkout-btn bg-[#b45dc9] hover:bg-[#dc95ed] text-white font-bold py-2 px-4 
                             rounded-lg mt-4">Checkout</button>
+                        <button class="Clear-btn bg-gray-500 hover:bg-[#dc95ed] text-white font-bold py-2 px-4 
+                            rounded-lg mt-4" onclick="openClearModal('delete-modal')">Clear</button>
+
                     </div>
 
                 </div>
@@ -279,6 +290,22 @@ $id = $_SESSION['user_id'];
         <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('QuantityModal')"></div>
     </div>
 
+    <!-- Delete Modal -->
+    <div id="delete-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('delete-modal')"></div>
+        <div class="bg-white rounded-lg p-8 relative">
+            <h2 class="text-2xl font-bold mb-4">Are you sure you want to clear cart?</h2>
+            <form id="delete-form" action="api/clear_cart.php" method="POST">
+                <input type="hidden" name="delete-id" id="delete-id">
+                <div class="flex justify-end">
+                    <button id="submit-delete" type="submit"
+                        class="btn rounded-full bg-[#4e4485] py-1 px-3 mr-3 text-white">Submit</button>
+                    <button id="cancel-delete" type="button" onclick="closeModal('delete-modal')"
+                        class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -403,6 +430,11 @@ $id = $_SESSION['user_id'];
 
             var quantityIdInput = document.querySelector('#quantity_id');
             quantityIdInput.value = itemId;
+        }
+
+        function openClearModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('hidden');
         }
 
         // Close quantity item Modal

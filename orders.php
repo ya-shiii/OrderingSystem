@@ -99,7 +99,7 @@ $id = $_SESSION['user_id'];
             </div>
         </a>
         <div class="flex">
-        <p class="text-white font-bold uppercase text-xl mx-2">
+            <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="index.php">
                     Place order
                 </a>
@@ -107,7 +107,7 @@ $id = $_SESSION['user_id'];
 
             <div class="border border-r-white-500 mx-2"></div>
 
-            <p class="text-white font-bold uppercase text-xl mx-2">
+            <p class="text-white font-bold uppercase text-xl mx-2 current-page">
                 <a href="orders.php">
                     orders list
                 </a>
@@ -115,7 +115,7 @@ $id = $_SESSION['user_id'];
 
             <div class="border border-r-white-500 mx-2"></div>
 
-            <p class="text-white font-bold uppercase text-xl mx-2 current-page">
+            <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="items-list.php">
                     Items
                 </a>
@@ -148,17 +148,17 @@ $id = $_SESSION['user_id'];
     <div class="bg-gray-200 min-h-screen flex flex-col items-start justify-center py-8">
         <div id="addbtn" class="ml-14 mb-3">
             <a href="#">
-                <p class="btn text-white bg-[#4e4485] px-6 py-3 rounded-full font-bold uppercase">Add item</p>
+                <p class="btn text-white bg-[#4e4485] px-6 py-3 rounded-full font-bold uppercase">Clear list</p>
             </a>
         </div>
         <div id="main-content" class="rounded-2xl w-11/12 bg-[#a99cf0] drop-shadow-xl p-8 mx-auto">
             <table id="items-table" class="table bg-[#a99cf0]" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Item ID</th>
-                        <th>Item Name</th>
-                        <th>Item Price</th>
-                        <th>Item Type</th>
+                        <th>Queue</th>
+                        <th>Items</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -167,10 +167,10 @@ $id = $_SESSION['user_id'];
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Item ID</th>
-                        <th>Item Name</th>
-                        <th>Item Price</th>
-                        <th>Item Type</th>
+                        <th>Queue</th>
+                        <th>Items</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -178,115 +178,6 @@ $id = $_SESSION['user_id'];
         </div>
     </div>
 
-
-    <!-- Add item Modal -->
-    <div id="add-item-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('add-item-modal')"></div>
-        <div class="bg-[#4e4485] rounded-lg p-8 relative drop-shadow-xl">
-            <h2 class="text-2xl text-white font-bold mb-4">Add Item</h2>
-            <form id="add-item-form" action="api/additem.php" method="POST">
-                <div class="mb-4">
-                    <label for="item_name" class="text-white block text-lg font-semibold mb-1">Item Name:</label>
-                    <input type="text" id="item_name" name="item_name"
-                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
-                        required>
-                </div>
-                <div class="mb-4">
-                    <label for="item_price" class="text-white block text-lg font-semibold mb-1">Item Price:</label>
-                    <input type="item_price" id="item_price" name="item_price"
-                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
-                        required>
-                </div>
-                <div class="mb-4">
-                    <label for="item_type" class="text-white block text-lg font-semibold mb-1">Item Type:</label>
-                    <select id="item_type" name="item_type"
-                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
-                        required>
-                        <option value="Beverage">Beverage</option>
-                        <option value="Meal">Meal</option>
-                        <option value="Snack">Snack</option>
-                        <option value="Add-on">Add-on</option>
-                    </select>
-                </div>
-                <div class="flex justify-end">
-                    <button type="submit" id="submit-add-item"
-                        class="btn rounded-full bg-[#4d68a1] py-1 drop-shadow-lg px-3 mr-3 text-white">Submit</button>
-                    <button id="cancel-add-item" type="button"
-                        class="btn rounded-full bg-gray-400 py-1 px-3 drop-shadow-lg font-bold mr-2">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Edit item Modal -->
-    <div id="edit-item-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('edit-item-modal')"></div>
-        <div class="bg-white rounded-lg p-8 relative">
-            <h2 class="text-2xl font-bold mb-4">Edit item</h2>
-            <form id="edit-item-form" action="api/update_item.php" method="POST">
-                <input type="hidden" name="item_id" id="edit-item-id">
-                <div class="mb-4">
-                    <label for="edit-item_name" class="block text-lg font-semibold mb-1">Item Name:</label>
-                    <input type="text" id="edit-item_name" name="item_name"
-                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
-                        required>
-                </div>
-                <div class="mb-4">
-                    <label for="edit-item_price" class="block text-lg font-semibold mb-1">Item Price:</label>
-                    <input type="text" id="edit-item_price" name="item_price"
-                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
-                        required>
-                </div>
-                <div class="mb-4">
-                    <label for="edit-item_type" class="block text-lg font-semibold mb-1">Item Type:</label>
-                    <select id="edit-item_type" name="item_type"
-                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
-                        required>
-                        <option value="Beverage">Beverage</option>
-                        <option value="Meal">Meal</option>
-                        <option value="Snack">Snack</option>
-                        <option value="Add-on">Add-on</option>
-                    </select>
-                </div>
-                <div class="flex justify-end">
-                    <button id="submit-edit-item" type="submit"
-                        class="btn rounded-full bg-[#4e4485] cancel-add-itemitempy-1 px-3 mr-3 text-white">Submit</button>
-                    <button id="cancel-edit-item" type="button"
-                        class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- Delete item Modal -->
-    <div id="delete-item-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="fixed inset-0 bg-gray-800 bg-opacity-75" onclick="closeModal('delete-item-modal')"></div>
-        <div class="bg-white rounded-lg p-8 relative">
-            <h2 class="text-2xl font-bold mb-4">Are you sure you want to delete item?</h2>
-            <form id="delete-item-form" action="api/delete_item.php" method="POST">
-                <input type="hidden" name="item_id" id="delete-item-id">
-                <div class="mb-4">
-                    <label for="delete-item_name" class="block text-lg font-semibold mb-1">Item Name:</label>
-                    <input type="text" id="delete-item_name" name="item_name"
-                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
-                        readonly>
-                </div>
-                <div class="mb-4">
-                    <label for="delete-item_type" class="block text-lg font-semibold mb-1">Item Type:</label>
-                    <input type="text" id="delete-item_type" name="item_type"
-                        class="w-full border-gray-300 border rounded px-4 py-2 focus:outline-none focus:border-indigo-500"
-                        readonly>
-                </div>
-                <div class="flex justify-end">
-                    <button id="submit-delete-item" type="submit"
-                        class="btn rounded-full bg-[#4e4485] py-1 px-3 mr-3 text-white">Submit</button>
-                    <button id="cancel-delete-item" type="button"
-                        class="btn rounded-full bg-gray-400 py-1 px-3 text-white mr-2">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <script>
         $(document).ready(function () {
@@ -324,7 +215,7 @@ $id = $_SESSION['user_id'];
             // Initialize DataTable
             $('#items-table').DataTable({
                 ajax: {
-                    url: 'api/items.php',
+                    url: 'api/orders.php',
                     dataSrc: 'data' // Use 'data' as the property to retrieve the JSON data
                 },
                 columns: [
@@ -343,7 +234,7 @@ $id = $_SESSION['user_id'];
                             return data;
                         }
                     }
-                ] 
+                ]
             });
 
 

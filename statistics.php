@@ -80,7 +80,7 @@ $id = $_SESSION['user_id'];
 
 <body>
     <!-- Navbar -->
-    <div id="navbar" class="flex items-center justify-between bg-[#4e4485] py-2 px-16 absolute w-full">
+    <div id="navbar" class="flex items-center justify-between bg-[#4e4485] py-2 px-16 w-full">
         <a href="index.php">
             <div class="flex items-center">
 
@@ -90,15 +90,23 @@ $id = $_SESSION['user_id'];
             </div>
         </a>
         <div class="flex">
-            <p class="text-white font-bold uppercase text-xl mx-2 ">
+            <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="index.php">
-                    orders
+                    Place order
                 </a>
             </p>
 
             <div class="border border-r-white-500 mx-2"></div>
 
             <p class="text-white font-bold uppercase text-xl mx-2">
+                <a href="orders.php">
+                    orders list
+                </a>
+            </p>
+
+            <div class="border border-r-white-500 mx-2"></div>
+
+            <p class="text-white font-bold uppercase text-xl mx-2 ">
                 <a href="items-list.php">
                     Items
                 </a>
@@ -114,7 +122,7 @@ $id = $_SESSION['user_id'];
 
             <div class="border border-r-white-500 mx-2"></div>
 
-            <p class="text-white font-bold uppercase text-xl mx-2">
+            <p class="text-white font-bold uppercase text-xl mx-2 ">
                 <a href="users-list.php">
                     users
                 </a>
@@ -126,6 +134,7 @@ $id = $_SESSION['user_id'];
             </a>
         </div>
     </div>
+
 
     <!-- Main Content -->
     <div class="flex justify-center items-center h-screen">
@@ -140,6 +149,30 @@ $id = $_SESSION['user_id'];
 
                             <h2 class="card-title text-center font-bold text-2xl text-white font-black mb-3">SHII Grills
                             </h2>
+
+                            <div class="text-white mt-5">
+                                <h3 class="text-xl font-bold mb-2">Summary of Sales</h3>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                    <div id="today-sales" class="bg-gray-800 rounded-lg p-4">
+
+                                    </div>
+                                    <div id="week-sales" class="bg-gray-800 rounded-lg p-4">
+
+                                    </div>
+                                    <div id="prev-week-sales" class="bg-gray-800 rounded-lg p-4">
+
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 mt-4 px-16">
+                                    <div id="month-sales" class="bg-gray-800 rounded-lg p-4">
+
+                                    </div>
+                                    <div id="prev-month-sales" class="bg-gray-800 rounded-lg p-4">
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -147,12 +180,8 @@ $id = $_SESSION['user_id'];
         </div>
     </div>
 
-    <a href="#">
-        <div id="add-button"
-            class="btn z-10 fixed bottom-4 right-14 w-20 h-20 bg-[#2f58d4] rounded-full flex items-center drop-shadow-xl justify-center p-1">
-            <p class="text-white text-xl">+</p>
-        </div>
-    </a>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -170,6 +199,61 @@ $id = $_SESSION['user_id'];
             setTimeout(function () {
                 $('#add-button').addClass('floating-animation-down');
             }, 150);
+
+            $.ajax({
+                url: "api/stats.php",
+                method: "GET",
+                dataType: "json",
+                success: function (response) {
+                    // Populate today's sales information
+                    $("#today-sales").html(`
+                        <h4 class="text-lg font-semibold mb-2">Today's Sales</h4>
+                        <p>Total Earnings: ₱${response.today.totalEarnings}</p>
+                        <p>Top Selling: ${response.today.topSelling}</p>
+                        <p>Sold Quantity: ${response.today.soldQuantity}</p>
+                        <p>Least sold: ${response.today.leastSoldItem}</p>
+                    `);
+
+                    // Populate this week's sales information
+                    $("#week-sales").html(`
+                        <h4 class="text-lg font-semibold mb-2">This Week's Sales</h4>
+                        <p>Total Earnings: ₱${response.week.totalEarnings}</p>
+                        <p>Top Selling: ${response.week.topSelling}</p>
+                        <p>Sold Quantity: ${response.week.soldQuantity}</p>
+                        <p>Least sold: ${response.week.leastSoldItem}</p>
+                    `);
+
+                    // Populate previous week's sales information
+                    $("#prev-week-sales").html(`
+                        <h4 class="text-lg font-semibold mb-2">Previous Week's Sales</h4>
+                        <p>Total Earnings: ₱${response.prevweek.totalEarnings}</p>
+                        <p>Top Selling: ${response.prevweek.topSelling}</p>
+                        <p>Sold Quantity: ${response.prevweek.soldQuantity}</p>
+                        <p>Least sold: ${response.prevweek.leastSoldItem}</p>
+                    `);
+
+                    // Populate this month's sales information
+                    $("#month-sales").html(`
+                        <h4 class="text-lg font-semibold mb-2">This Month's Sales</h4>
+                        <p>Total Earnings: ₱${response.month.totalEarnings}</p>
+                        <p>Top Selling: ${response.month.topSelling}</p>
+                        <p>Sold Quantity: ${response.month.soldQuantity}</p>
+                        <p>Least sold: ${response.month.leastSoldItem}</p>
+                    `);
+
+                    // Populate previous month's sales information
+                    $("#prev-month-sales").html(`
+                        <h4 class="text-lg font-semibold mb-2">Previous Month's Sales</h4>
+                        <p>Total Earnings: ₱${response.prevmonth.totalEarnings}</p>
+                        <p>Top Selling: ${response.prevmonth.topSelling}</p>
+                        <p>Sold Quantity: ${response.prevmonth.soldQuantity}</p>
+                        <p>Least sold: ${response.prevmonth.leastSoldItem}</p>
+                    `);
+                },
+                error: function () {
+                    console.log("Error occurred while fetching sales data.");
+                }
+            });
         });
     </script>
 

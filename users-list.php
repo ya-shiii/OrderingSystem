@@ -99,15 +99,23 @@ $id = $_SESSION['user_id'];
             </div>
         </a>
         <div class="flex">
-            <p class="text-white font-bold uppercase text-xl mx-2 ">
+        <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="index.php">
-                    orders
+                    Place order
                 </a>
             </p>
 
             <div class="border border-r-white-500 mx-2"></div>
 
             <p class="text-white font-bold uppercase text-xl mx-2">
+                <a href="orders.php">
+                    orders list
+                </a>
+            </p>
+
+            <div class="border border-r-white-500 mx-2"></div>
+
+            <p class="text-white font-bold uppercase text-xl mx-2 ">
                 <a href="items-list.php">
                     Items
                 </a>
