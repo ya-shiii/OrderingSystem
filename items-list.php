@@ -10,6 +10,14 @@ if (!isset($_SESSION['usertype'])) {
     // Redirect to the login page
     echo "<script>alert('You need to login!'); window.location.href='login.php';</script>";
     exit();
+}elseif ($_SESSION['usertype']=='Kitchen Staff'){
+    echo "<script>alert('Only admins have access to this page');</script>";
+    header("Location: orders.php");
+    exit();
+}else{
+    echo "<script>alert('Only admins have access to this page');</script>";
+    header("Location: index.php");
+    exit();
 }
 
 $usertype = $_SESSION['usertype'];

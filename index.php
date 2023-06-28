@@ -143,9 +143,10 @@ $id = $_SESSION['user_id'];
                     orders list
                 </a>
             </p>
-
+        <?php if ($usertype=='Admin'){?>
             <div class="border border-r-white-500 mx-2"></div>
-
+        
+        
             <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="items-list.php">
                     Items
@@ -153,7 +154,7 @@ $id = $_SESSION['user_id'];
             </p>
 
             <div class="border border-r-white-500 mx-2"></div>
-
+          
             <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="statistics.php">
                     Sales statistics
@@ -167,6 +168,7 @@ $id = $_SESSION['user_id'];
                     users
                 </a>
             </p>
+        <?php } ?>     
         </div>
         <div>
             <a href="api/logout.php">

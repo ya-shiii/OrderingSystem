@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id'])) {
     } else {
         // Error retrieving user details
         echo "Error retrieving user details: " . $stmt->error;
+        echo "<script>alert('Error retrieving user details'); window.location.href=document.referrer;</script>";
     }
 
     // Close the prepared statement and database connection
@@ -29,5 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id'])) {
 } else {
     // Handle case when user ID is not provided
     echo "User ID not provided.";
+    echo "<script>alert('User ID not provided'); window.location.href=document.referrer;</script>";
 }
 ?>

@@ -30,7 +30,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION["usertype"] = $row["usertype"];
 
     // Redirect to the desired page
-    header("Location: ../index.php");
+    // Check the usertype and redirect accordingly
+    if ($usertype == 'Kitchen Staff') {
+      header("Location: ../orders.php");
+      exit();
+    }else{
+      header("Location: ../index.php");
+    }
     exit();
   } else {
     // User not found, display an error message

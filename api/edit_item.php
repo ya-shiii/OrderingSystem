@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['item_id'])) {
     } else {
         // Error retrieving item details
         echo "Error retrieving item details: " . $stmt->error;
+        echo "<script>alert('Error in deleting data'); window.location.href=document.referrer;</script>";
     }
 
     // Close the prepared statement and database connection
@@ -29,5 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['item_id'])) {
 } else {
     // Handle case when item ID is not provided
     echo "Item ID not provided.";
+    echo "<script>alert('Item ID not provided'); window.location.href=document.referrer;</script>";
+    
 }
 ?>
