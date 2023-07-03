@@ -99,46 +99,48 @@ $id = $_SESSION['user_id'];
             </div>
         </a>
         <div class="flex">
-        <?php if ($usertype!='Kitchen Staff'){?>
-            <p class="text-white font-bold uppercase text-xl mx-2">
-                <a href="index.php">
-                    Place order
-                </a>
-            </p>
-        
-            <div class="border border-r-white-500 mx-2"></div>
-        <?php } ?>
-            <p class="text-white font-bold uppercase text-xl mx-2 <?php if ($usertype!='Kitchen Staff'){ echo "current-page"; }?>">
+            <?php if ($usertype != 'Kitchen Staff') { ?>
+                <p class="text-white font-bold uppercase text-xl mx-2">
+                    <a href="index.php">
+                        Place order
+                    </a>
+                </p>
+
+                <div class="border border-r-white-500 mx-2"></div>
+            <?php } ?>
+            <p class="text-white font-bold uppercase text-xl mx-2 <?php if ($usertype != 'Kitchen Staff') {
+                echo "current-page";
+            } ?>">
                 <a href="orders.php">
                     orders list
                 </a>
             </p>
-            <?php if ($usertype=='Admin'){?>
-        
-            <div class="border border-r-white-500 mx-2"></div>
+            <?php if ($usertype == 'Admin') { ?>
 
-            <p class="text-white font-bold uppercase text-xl mx-2">
-                <a href="items-list.php">
-                    Items
-                </a>
-            </p>
+                <div class="border border-r-white-500 mx-2"></div>
 
-            <div class="border border-r-white-500 mx-2"></div>
+                <p class="text-white font-bold uppercase text-xl mx-2">
+                    <a href="items-list.php">
+                        Items
+                    </a>
+                </p>
 
-            <p class="text-white font-bold uppercase text-xl mx-2 ">
-                <a href="statistics.php">
-                    Sales statistics
-                </a>
-            </p>
+                <div class="border border-r-white-500 mx-2"></div>
 
-            <div class="border border-r-white-500 mx-2"></div>
+                <p class="text-white font-bold uppercase text-xl mx-2 ">
+                    <a href="statistics.php">
+                        Sales statistics
+                    </a>
+                </p>
 
-            <p class="text-white font-bold uppercase text-xl mx-2 ">
-                <a href="users-list.php">
-                    users
-                </a>
-            </p>
-        <?php } ?>    
+                <div class="border border-r-white-500 mx-2"></div>
+
+                <p class="text-white font-bold uppercase text-xl mx-2 ">
+                    <a href="users-list.php">
+                        users
+                    </a>
+                </p>
+            <?php } ?>
         </div>
         <div>
             <a href="api/logout.php">
@@ -149,7 +151,7 @@ $id = $_SESSION['user_id'];
 
     <!-- Main Content -->
     <div class="bg-gray-200 min-h-screen flex flex-col items-start justify-center py-8">
-        
+
         <div id="main-content" class="rounded-2xl w-11/12 bg-[#a99cf0] drop-shadow-xl p-8 mx-auto">
             <table id="items-table" class="table bg-[#a99cf0]" style="width:100%">
                 <thead>
@@ -211,32 +213,39 @@ $id = $_SESSION['user_id'];
                 $('#delete-item-modal').addClass('hidden');
             });
 
-            // Initialize DataTable
-            $('#items-table').DataTable({
-                ajax: {
-                    url: 'api/orders.php',
-                    dataSrc: 'data' // Use 'data' as the property to retrieve the JSON data
-                },
-                columns: [
-                    { data: '0', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM ID' column
-                    { data: '1', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM NAME' column
-                    {
-                        data: '2', className: 'text-center bg-[#a99cf0]', render: function (data, type, row) {
-                            return '₱ ' + data; // Append "Php" before the data
+            function initializeDataTable() {
+                // Initialize DataTable
+                $('#items-table').DataTable({
+                    ajax: {
+                        url: 'api/orders.php',
+                        dataSrc: 'data' // Use 'data' as the property to retrieve the JSON data
+                    },
+                    columns: [
+                        { data: '0', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM ID' column
+                        { data: '1', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM NAME' column
+                        {
+                            data: '2', className: 'text-center bg-[#a99cf0]', render: function (data, type, row) {
+                                return '₱ ' + data; // Append "Php" before the data
+                            }
+                        }, // Use the index to access the 'ITEM PRICE' column
+                        { data: '3', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM TYPE' column
+                        {
+                            data: '4', // Use the index to access the 'OPTIONS' column
+                            className: 'text-center bg-[#a99cf0]',
+                            render: function (data, type, row) {
+                                return data;
+                            }
                         }
-                    }, // Use the index to access the 'ITEM PRICE' column
-                    { data: '3', className: 'text-center bg-[#a99cf0]' }, // Use the index to access the 'ITEM TYPE' column
-                    {
-                        data: '4', // Use the index to access the 'OPTIONS' column
-                        className: 'text-center bg-[#a99cf0]',
-                        render: function (data, type, row) {
-                            return data;
-                        }
-                    }
-                ]
-            });
+                    ]
+                });
+            }
+            // Call the function to initialize DataTable
+            initializeDataTable();
 
-
+            // Refresh DataTable every 10 seconds
+            setInterval(function () {
+                $('#items-table').DataTable().ajax.reload();
+            }, 10000); // 10000 milliseconds = 10 seconds
 
 
         });

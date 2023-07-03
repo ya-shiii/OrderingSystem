@@ -5,19 +5,20 @@ $value = date('Y-m-d H:i:s');
 // Set the cookie
 setcookie($name, $value);
 session_start();
-
-if (!isset($_SESSION['usertype'])) {
-    // Redirect to the login page
-    echo "<script>alert('You need to login!'); window.location.href='login.php';</script>";
-    exit();
-}elseif ($_SESSION['usertype']=='Kitchen Staff'){
-    echo "<script>alert('Only admins have access to this page');</script>";
-    header("Location: orders.php");
-    exit();
-}else{
-    echo "<script>alert('Only admins have access to this page');</script>";
-    header("Location: index.php");
-    exit();
+if ($_SESSION['usertype'] != 'Admin') {
+    if (!isset($_SESSION['usertype'])) {
+        // Redirect to the login page
+        echo "<script>alert('You need to login!'); window.location.href='login.php';</script>";
+        exit();
+    } elseif ($_SESSION['usertype'] == 'Kitchen Staff') {
+        echo "<script>alert('Only admins have access to this page');</script>";
+        header("Location: orders.php");
+        exit();
+    } else {
+        echo "<script>alert('Only admins have access to this page');</script>";
+        header("Location: index.php");
+        exit();
+    }
 }
 
 $usertype = $_SESSION['usertype'];
@@ -107,7 +108,7 @@ $id = $_SESSION['user_id'];
             </div>
         </a>
         <div class="flex">
-        <p class="text-white font-bold uppercase text-xl mx-2">
+            <p class="text-white font-bold uppercase text-xl mx-2">
                 <a href="index.php">
                     Place order
                 </a>
