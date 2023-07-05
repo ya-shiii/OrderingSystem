@@ -314,7 +314,11 @@ $id = $_SESSION['user_id'];
             });
         }
 
-
+        function confirmCancelOrder(orderId) {
+            if (confirm('Are you sure you want to cancel this order?')) {
+                window.location.href = 'api/cancelOrderStatus.php?order_id=' + orderId;
+            }
+        }
     </script>
 
 

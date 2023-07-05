@@ -9,11 +9,26 @@ $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
-        $editButton = "<button class='edit-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg col-span-8 mb-1' data-userid='" . $row['order_id'] . "' onclick='window.location.href = \"api/updateOrderStatus.php?order_id=" . $row['order_id'] . "\"'>Update</button>";
-        if (($row['status'] == 'Completed')||($usertype== 'Front Desk')) {
-            $options = "";
+        $editButton = "<button class='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg col-span-8 mb-1' data-userid='" . $row['order_id'] . "' onclick='window.location.href = \"api/updateOrderStatus.php?order_id=" . $row['order_id'] . "\"'>Update</button>";
+        $readyButton = "<button class='bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg col-span-8 mb-1' data-userid='" . $row['order_id'] . "' onclick='window.location.href = \"api/updateOrderStatus.php?order_id=" . $row['order_id'] . "\"'>Serve</button>";
+        $cancelButton = "<button class='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg col-span-8 mb-1' data-userid='" . $row['order_id'] . "' onclick='confirmCancelOrder(" . $row['order_id'] . ")'>Cancel</button>";
+        
+        if (($row['status'] == 'Preparing')&&(($usertype == 'Kitchen Staff')||($usertype == 'Admin'))) {
+            if($usertype == 'Admin'){
+                $options = $readyButton."  ".$cancelButton;
+            }else{
+                $options = $readyButton;
+            }
+        } elseif (($row['status'] == 'Serving')&&(($usertype == 'Front Desk')||($usertype == 'Admin'))){
+            if($usertype == 'Admin'){
+                $options = $editButton." ".$cancelButton;
+            }else{
+                $options = $editButton;
+            }
+            
+            
         } else {
-            $options = $editButton;
+            $options = "";
         }
 
         $output['data'][] = [

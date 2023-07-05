@@ -143,32 +143,32 @@ $id = $_SESSION['user_id'];
                     orders list
                 </a>
             </p>
-        <?php if ($usertype=='Admin'){?>
-            <div class="border border-r-white-500 mx-2"></div>
-        
-        
-            <p class="text-white font-bold uppercase text-xl mx-2">
-                <a href="items-list.php">
-                    Items
-                </a>
-            </p>
+            <?php if ($usertype == 'Admin') { ?>
+                <div class="border border-r-white-500 mx-2"></div>
 
-            <div class="border border-r-white-500 mx-2"></div>
-          
-            <p class="text-white font-bold uppercase text-xl mx-2">
-                <a href="statistics.php">
-                    Sales statistics
-                </a>
-            </p>
 
-            <div class="border border-r-white-500 mx-2"></div>
+                <p class="text-white font-bold uppercase text-xl mx-2">
+                    <a href="items-list.php">
+                        Items
+                    </a>
+                </p>
 
-            <p class="text-white font-bold uppercase text-xl mx-2">
-                <a href="users-list.php">
-                    users
-                </a>
-            </p>
-        <?php } ?>     
+                <div class="border border-r-white-500 mx-2"></div>
+
+                <p class="text-white font-bold uppercase text-xl mx-2">
+                    <a href="statistics.php">
+                        Sales statistics
+                    </a>
+                </p>
+
+                <div class="border border-r-white-500 mx-2"></div>
+
+                <p class="text-white font-bold uppercase text-xl mx-2">
+                    <a href="users-list.php">
+                        users
+                    </a>
+                </p>
+            <?php } ?>
         </div>
         <div>
             <a href="api/logout.php">
@@ -258,7 +258,8 @@ $id = $_SESSION['user_id'];
                             rounded-lg mt-4">Checkout</button>
                         <button class="Clear-btn bg-gray-500 hover:bg-[#dc95ed] text-white font-bold py-2 px-4 
                             rounded-lg mt-4" onclick="openClearModal('delete-modal')">Clear</button>
-
+                        <button class="order-list-btn bg-[#4e4485] hover:bg-[#a99cf0] text-white font-bold py-2 px-4 
+                            rounded-lg mt-4">View Orders</button>
                     </div>
 
                 </div>
@@ -470,13 +471,19 @@ $id = $_SESSION['user_id'];
         document.addEventListener('DOMContentLoaded', function () {
             initializeMenu();
         });
+
         // Add event listener to the Checkout button
         var checkoutBtn = document.querySelector('.checkout-btn');
         checkoutBtn.addEventListener('click', function () {
             // Redirect to api/place_order.php
             window.location.href = 'api/place_order.php';
         });
-
+        // Add event listener to the order-list-btn button
+        var checkoutBtn = document.querySelector('.order-list-btn');
+        checkoutBtn.addEventListener('click', function () {
+            // Redirect to api/place_order.php
+            window.location.href = 'orders.php';
+        });
         $(document).ready(function () {
             // Apply floating animation to the main content after page load
             setTimeout(function () {

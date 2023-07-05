@@ -8,7 +8,7 @@ $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         $editButton = "<button class='edit-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg col-span-8 mb-1' data-userid='" . $row['user_id'] . "' onclick='openEditModal(" . $row['user_id'] . ")'>Edit</button>";
-        $deleteButton = "<button class='delete-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg col-span-8 mb-1' data-userid='" . $row['user_id'] . "' onclick='openDeleteModal(" . $row['user_id'] . ")'>Delete</button>";
+        $deleteButton = "<button class='delete-btn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg col-span-8 mb-1' data-userid='" . $row['user_id'] . "' onclick='openDeleteModal(" . $row['user_id'] . ")'>Delete</button>";
         $options = $editButton . " " . $deleteButton;
 
         $output['data'][] = array(
